@@ -8,11 +8,11 @@ import (
 	"syscall/js"
 )
 
-func CreateD1(runtimeCtxObj js.Value, dbName string) (driver.Connector, error) {
+func CreateD1(runtimeCtxObj js.Value) (driver.Connector, error) {
 
 	ctx := runtimecontext.New(context.Background(), js.Value{}, runtimeCtxObj)
 
-	connector, err := d1.OpenConnector(ctx, dbName)
+	connector, err := d1.OpenConnector(ctx, "DB")
 	if err != nil {
 		return nil, err
 	}
