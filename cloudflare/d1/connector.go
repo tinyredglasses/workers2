@@ -3,6 +3,7 @@ package d1
 import (
 	"context"
 	"database/sql/driver"
+	"fmt"
 	"syscall/js"
 
 	"github.com/tinyredglasses/workers2/cloudflare/internal/cfruntimecontext"
@@ -19,6 +20,8 @@ var (
 // OpenConnector returns Connector of D1.
 // This method checks DB existence. If DB was not found, this function returns error.
 func OpenConnector(ctx context.Context, name string) (driver.Connector, error) {
+	a1 := cfruntimecontext.MustGetRuntimeContextEnv(ctx)
+	fmt.Printf("%+v\n", a1)
 	v := cfruntimecontext.MustGetRuntimeContextEnv(ctx).Get(name)
 	if v.IsUndefined() {
 		return nil, ErrDatabaseNotFound
