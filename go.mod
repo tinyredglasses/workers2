@@ -1,3 +1,3 @@
-module github.com/tinyredglasses/workers
+module github.com/tinyredglasses/workers2
 
 go 1.21.3
