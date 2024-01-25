@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-
-	"github.com/syumai/workers"
 )
 
 type HelloRequest struct {

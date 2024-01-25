@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"io"
 	"net/http"
-
-	"github.com/syumai/workers"
 )
 
 func main() {

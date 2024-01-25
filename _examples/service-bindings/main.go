@@ -5,9 +5,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/syumai/workers"
-	"github.com/syumai/workers/cloudflare"
-	"github.com/syumai/workers/cloudflare/fetch"
+	"github.com/tinyredglasses/workers2/cloudflare"
+	"github.com/tinyredglasses/workers2/cloudflare/fetch"
 )
 
 func main() {

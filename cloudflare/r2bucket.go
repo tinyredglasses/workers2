@@ -6,8 +6,8 @@ import (
 	"io"
 	"syscall/js"
 
-	"github.com/syumai/workers/cloudflare/internal/cfruntimecontext"
-	"github.com/syumai/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers2/cloudflare/internal/cfruntimecontext"
+	"github.com/tinyredglasses/workers2/internal/jsutil"
 )
 
 // R2Bucket represents interface of Cloudflare Worker's R2 Bucket instance.
@@ -19,7 +19,7 @@ type R2Bucket struct {
 
 // NewR2Bucket returns R2Bucket for given variable name.
 //   - variable name must be defined in wrangler.toml.
-//   - see example: https://github.com/syumai/workers/tree/main/_examples/r2-image-viewer
+//   - see example: https://github.com/tinyredglasses/workers2/tree/main/_examples/r2-image-viewer
 //   - if the given variable name doesn't exist on runtime context, returns error.
 //   - This function panics when a runtime context is not found.
 func NewR2Bucket(ctx context.Context, varName string) (*R2Bucket, error) {

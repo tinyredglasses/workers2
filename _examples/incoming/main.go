@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/syumai/workers"
-	"github.com/syumai/workers/cloudflare/fetch"
+	"github.com/tinyredglasses/workers2/cloudflare/fetch"
 )
 
 func main() {

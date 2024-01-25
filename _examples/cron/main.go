@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/syumai/workers/cloudflare/cron"
+	"github.com/tinyredglasses/workers2/cloudflare/cron"
 )
 
 func task(ctx context.Context) error {

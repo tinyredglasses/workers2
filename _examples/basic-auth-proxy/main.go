@@ -5,8 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/syumai/workers"
-	"github.com/syumai/workers/cloudflare/fetch"
+	"github.com/tinyredglasses/workers2/cloudflare/fetch"
 )
 
 const (

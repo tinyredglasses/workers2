@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"github.com/syumai/workers/internal/jsutil"
-	"github.com/syumai/workers/internal/runtimecontext"
+	"github.com/tinyredglasses/workers2/internal/jsutil"
+	"github.com/tinyredglasses/workers2/internal/runtimecontext"
 )
 
 type Task func(ctx context.Context) error

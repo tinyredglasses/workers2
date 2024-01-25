@@ -9,9 +9,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/syumai/workers/_examples/d1-blog-server/app/model"
-	"github.com/syumai/workers/cloudflare/d1"
-	_ "github.com/syumai/workers/cloudflare/d1" // register driver
+	"github.com/tinyredglasses/workers2/_examples/d1-blog-server/app/model"
+	"github.com/tinyredglasses/workers2/cloudflare/d1"
+	_ "github.com/tinyredglasses/workers2/cloudflare/d1" // register driver
 )
 
 type articleHandler struct{}

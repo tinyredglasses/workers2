@@ -4,15 +4,14 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/syumai/workers"
-	"github.com/syumai/workers/cloudflare"
+	"github.com/tinyredglasses/workers2/cloudflare"
 )
 
 func main() {
 	workers.Serve(&MyHandler{})
 }
 
-type MyHandler struct {}
+type MyHandler struct{}
 
 func (_ *MyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	COUNTER, err := cloudflare.NewDurableObjectNamespace(req.Context(), "COUNTER")
@@ -38,4 +37,3 @@ func (_ *MyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	w.Write([]byte("Durable object 'A' count: " + string(count)))
 }
-

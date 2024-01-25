@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"syscall/js"
 
-	"github.com/syumai/workers/internal/jshttp"
-	"github.com/syumai/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers2/internal/jshttp"
+	"github.com/tinyredglasses/workers2/internal/jsutil"
 )
 
 // fetch is a function that reproduces cloudflare fetch.

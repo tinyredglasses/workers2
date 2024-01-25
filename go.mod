@@ -1,3 +1,3 @@
-module github.com/syumai/workers
+module github.com/tinyredglasses/workers
 
 go 1.21.3

@@ -3,7 +3,7 @@ package cache
 import (
 	"syscall/js"
 
-	"github.com/syumai/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers2/internal/jsutil"
 )
 
 var cache = js.Global().Get("caches")

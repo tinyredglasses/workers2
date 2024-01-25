@@ -8,7 +8,7 @@ import (
 	"syscall/js"
 	"time"
 
-	"github.com/syumai/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers2/internal/jsutil"
 )
 
 func newSocket(ctx context.Context, sockVal js.Value, readDeadline, writeDeadline time.Time) *Socket {

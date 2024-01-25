@@ -3,8 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/syumai/workers"
-	"github.com/syumai/workers/_examples/mysql-blog-server/app"
+	"github.com/tinyredglasses/workers2/_examples/mysql-blog-server/app"
 )
 
 func main() {

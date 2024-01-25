@@ -7,8 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/syumai/workers"
-	"github.com/syumai/workers/cloudflare"
+	"github.com/tinyredglasses/workers2/cloudflare"
 )
 
 // bucketName is R2 bucket name defined in wrangler.toml.
@@ -21,7 +20,7 @@ func handleErr(w http.ResponseWriter, msg string, err error) {
 }
 
 // This example is based on implementation in syumai/workers-playground
-//   - https://github.com/syumai/workers-playground/blob/e32881648ccc055e3690a0d9c750a834261c333e/r2-image-viewer/src/index.ts#L30
+//   - https://github.com/tinyredglasses/workers2-playground/blob/e32881648ccc055e3690a0d9c750a834261c333e/r2-image-viewer/src/index.ts#L30
 func handler(w http.ResponseWriter, req *http.Request) {
 	bucket, err := cloudflare.NewR2Bucket(req.Context(), bucketName)
 	if err != nil {

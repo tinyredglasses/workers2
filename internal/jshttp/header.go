@@ -5,7 +5,7 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/syumai/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers2/internal/jsutil"
 )
 
 // ToHeader converts JavaScript sides Headers to http.Header.

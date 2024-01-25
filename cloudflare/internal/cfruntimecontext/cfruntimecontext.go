@@ -5,7 +5,7 @@ import (
 	"errors"
 	"syscall/js"
 
-	"github.com/syumai/workers/internal/runtimecontext"
+	"github.com/tinyredglasses/workers2/internal/runtimecontext"
 )
 
 /**

@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"syscall/js"
 
-	"github.com/syumai/workers/internal/jsutil"
+	"github.com/tinyredglasses/workers2/internal/jsutil"
 )
 
 // ToResponse converts JavaScript sides Response to *http.Response.
