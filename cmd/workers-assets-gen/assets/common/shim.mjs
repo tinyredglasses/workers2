@@ -64,3 +64,9 @@ export async function onRequest(ctx) {
   await run(createRuntimeContext(env, ctx, binding));
   return binding.handleRequest(request);
 }
+
+export async function temp(event, env, ctx) {
+  const binding = {};
+  await run(createRuntimeContext(env, ctx, binding));
+  return binding.runTemp(event);
+}
