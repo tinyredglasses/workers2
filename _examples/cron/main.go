@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-
 	"github.com/tinyredglasses/workers2/cloudflare/cron"
 )
 
