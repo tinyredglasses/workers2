@@ -2,9 +2,7 @@ package temp
 
 import (
 	"context"
-	"database/sql/driver"
 	"fmt"
-	"github.com/tinyredglasses/workers2/cloudflare/d1"
 	"github.com/tinyredglasses/workers2/internal/jsutil"
 	"github.com/tinyredglasses/workers2/internal/runtimecontext"
 	"syscall/js"
@@ -14,18 +12,18 @@ var RuntimeContext = js.Global().Get("context")
 
 type Task func(ctx context.Context) error
 
-var scheduledTask Task
+var callTask Task
 
-func runScheduler(eventObj js.Value, runtimeCtxObj js.Value) error {
+func runCall(eventObj js.Value, runtimeCtxObj js.Value) error {
 	ctx := runtimecontext.New(context.Background(), eventObj, runtimeCtxObj)
-	if err := scheduledTask(ctx); err != nil {
+	if err := callTask(ctx); err != nil {
 		return err
 	}
 	return nil
 }
 
 func init() {
-	runSchedulerCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
+	runCallCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 1 {
 			panic(fmt.Errorf("invalid number of arguments given to runScheduler: %d", len(args)))
 		}
@@ -36,7 +34,7 @@ func init() {
 			defer cb.Release()
 			resolve := pArgs[0]
 			go func() {
-				err := runScheduler(eventObj, runtimeCtxObj)
+				err := runCall(eventObj, runtimeCtxObj)
 				if err != nil {
 					panic(err)
 				}
@@ -47,27 +45,15 @@ func init() {
 
 		return jsutil.NewPromise(cb)
 	})
-	jsutil.Binding.Set("runScheduler", runSchedulerCallback)
+	jsutil.Binding.Set("runCall", runCallCallback)
 }
 
 //go:wasmimport workers ready
 func ready()
 
 // ScheduleTask sets the Task to be executed
-func ScheduleTask(task Task) {
-	scheduledTask = task
+func RunTask(t Task) {
+	callTask = t
 	ready()
 	select {}
-}
-
-func CreateD1() (driver.Connector, error) {
-	fmt.Printf("%+v", RuntimeContext)
-	ctx := runtimecontext.New(context.Background(), js.Value{}, RuntimeContext)
-
-	connector, err := d1.OpenConnector(ctx, "DB")
-	if err != nil {
-		return nil, err
-	}
-
-	return connector, nil
 }
