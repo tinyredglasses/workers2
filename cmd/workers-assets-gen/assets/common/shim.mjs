@@ -65,8 +65,8 @@ export async function onRequest(ctx) {
   return binding.handleRequest(request);
 }
 
-export async function temp(event, env, ctx) {
+export async function onCall(event, env, ctx) {
   const binding = {};
   await run(createRuntimeContext(env, ctx, binding));
-  return binding.runTemp(event);
+  return binding.handleCall(event);
 }
