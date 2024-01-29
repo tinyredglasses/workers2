@@ -106,7 +106,6 @@ const websocketHandler = async (request, fn) => {
 async function handleWebsocketSession(websocket, fn) {
   console.log("handleSession")
   websocket.accept()
-  // await runCode()
 
   websocket.addEventListener("message", async ({ data }) => {
     // Create instance of WebAssembly Module `mod`, supplying

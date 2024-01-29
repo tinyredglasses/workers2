@@ -14,6 +14,7 @@ var task Task
 
 func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
 	ctx := runtimecontext.New(context.Background(), eventObj, runtimeCtxObj)
+
 	if err := task(ctx); err != nil {
 		return err
 	}
@@ -26,7 +27,9 @@ func init() {
 			panic(fmt.Errorf("invalid number of arguments given to handleData: %d", len(args)))
 		}
 		eventObj := args[0]
+		fmt.Println("handleDataCallback1", eventObj)
 		runtimeCtxObj := jsutil.RuntimeContext
+		fmt.Println("handleDataCallback2", runtimeCtxObj)
 		var cb js.Func
 		cb = js.FuncOf(func(_ js.Value, pArgs []js.Value) any {
 			defer cb.Release()
