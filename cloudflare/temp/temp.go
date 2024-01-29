@@ -16,8 +16,9 @@ func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
 	fmt.Println("handleData1", eventObj, runtimeCtxObj)
 
 	ctx := runtimecontext.New(context.Background(), eventObj, runtimeCtxObj)
-	runtimecontext.TryExtractRuntimeObj(ctx)
-
+	v := runtimecontext.TryExtractRuntimeObj(ctx)
+	e := v.Get("env")
+	fmt.Println(e.IsUndefined())
 	fmt.Println("handleData2")
 
 	if err := task(ctx); err != nil {
