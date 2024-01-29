@@ -30,7 +30,8 @@ async function run(ctx) {
   const instance = new WebAssembly.Instance(mod, {
     ...go.importObject,
     workers: {
-      ready: () => { ready() }
+      ready: () => { ready() },
+      sendMessage: (m) => { console.log(m)}
     },
   });
   go.run(instance, ctx);

@@ -8,23 +8,23 @@ import (
 	"syscall/js"
 )
 
-type Task func(ctx context.Context) error
+type Task func(ctx context.Context, sendMessage func(m string)) error
 
 var task Task
 
 func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
-	fmt.Println("handleData1", eventObj, runtimeCtxObj)
+	//fmt.Println("handleData1", eventObj, runtimeCtxObj)
 
 	ctx := runtimecontext.New(context.Background(), eventObj, runtimeCtxObj)
-	v := runtimecontext.TryExtractRuntimeObj(ctx)
-	e := v.Get("env")
-	fmt.Println(e.IsUndefined())
-	fmt.Println("handleData2")
+	//v := runtimecontext.TryExtractRuntimeObj(ctx)
+	//e := v.Get("env")
+	//fmt.Println(e.IsUndefined())
+	//fmt.Println("handleData2")
 
-	if err := task(ctx); err != nil {
+	if err := task(ctx, sendMessage); err != nil {
 		return err
 	}
-	fmt.Println("handleData3")
+	//fmt.Println("handleData3")
 
 	return nil
 }
@@ -59,6 +59,9 @@ func init() {
 
 //go:wasmimport workers ready
 func ready()
+
+//go:wasmimport workers sendMessage
+func sendMessage(msg string)
 
 // RunTemp sets the Task to be executed
 func RunTemp(t Task) {

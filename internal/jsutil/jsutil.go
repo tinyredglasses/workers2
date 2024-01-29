@@ -40,40 +40,28 @@ func ArrayFrom(v js.Value) js.Value {
 }
 
 func AwaitPromise(promiseVal js.Value) (js.Value, error) {
-	fmt.Println("AwaitPromise1")
 	resultCh := make(chan js.Value)
 	errCh := make(chan error)
 	var then, catch js.Func
 	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
-		fmt.Println("AwaitPromise.then1")
 		defer then.Release()
-		fmt.Println("AwaitPromise.then2")
 		result := args[0]
 		resultCh <- result
-		fmt.Println("AwaitPromise.then3")
 		return js.Undefined()
 	})
-	fmt.Println("AwaitPromise2")
 
 	catch = js.FuncOf(func(_ js.Value, args []js.Value) any {
-		fmt.Println("AwaitPromise.catch1")
 		defer catch.Release()
-		fmt.Println("AwaitPromise.catch2")
 		result := args[0]
 		errCh <- fmt.Errorf("failed on promise: %s", result.Call("toString").String())
-		fmt.Println("AwaitPromise.catch3")
 		return js.Undefined()
 	})
-	fmt.Println("AwaitPromise3")
 
 	promiseVal.Call("then", then).Call("catch", catch)
-	fmt.Println("AwaitPromise4")
 	select {
 	case result := <-resultCh:
-		fmt.Println("AwaitPromise5")
 		return result, nil
 	case err := <-errCh:
-		fmt.Println("AwaitPromise6")
 		return js.Value{}, err
 	}
 }
