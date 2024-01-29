@@ -13,11 +13,11 @@ type Task func(ctx context.Context) error
 var task Task
 
 func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
-	fmt.Println("handleData1")
-	fmt.Println(eventObj)
-	fmt.Println(runtimeCtxObj)
+	fmt.Println("handleData1", eventObj, runtimeCtxObj)
 
 	ctx := runtimecontext.New(context.Background(), eventObj, runtimeCtxObj)
+	runtimecontext.TryExtractRuntimeObj(ctx)
+
 	fmt.Println("handleData2")
 
 	if err := task(ctx); err != nil {

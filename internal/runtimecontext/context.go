@@ -2,6 +2,7 @@ package runtimecontext
 
 import (
 	"context"
+	"fmt"
 	"syscall/js"
 )
 
@@ -23,6 +24,16 @@ func MustExtractTriggerObj(ctx context.Context) js.Value {
 	if !ok {
 		panic("trigger object was not found")
 	}
+	return v
+}
+
+func TryExtractRuntimeObj(ctx context.Context) js.Value {
+	v, ok := ctx.Value(contextKeyRuntimeObj{}).(js.Value)
+	if !ok {
+		fmt.Println("missing")
+		return js.Value{}
+	}
+	fmt.Println(v)
 	return v
 }
 
