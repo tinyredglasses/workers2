@@ -16,7 +16,7 @@ type Task func(ctx context.Context) error
 
 var task Task
 
-func runTemp(eventObj js.Value, runtimeCtxObj js.Value) error {
+func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
 	ctx := runtimecontext.New(context.Background(), eventObj, runtimeCtxObj)
 	if err := task(ctx); err != nil {
 		return err
@@ -25,7 +25,7 @@ func runTemp(eventObj js.Value, runtimeCtxObj js.Value) error {
 }
 
 func init() {
-	runTempCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
+	handleDataCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 1 {
 			panic(fmt.Errorf("invalid number of arguments given to runScheduler: %d", len(args)))
 		}
@@ -36,7 +36,7 @@ func init() {
 			defer cb.Release()
 			resolve := pArgs[0]
 			go func() {
-				err := runTemp(eventObj, runtimeCtxObj)
+				err := handleData(eventObj, runtimeCtxObj)
 				if err != nil {
 					panic(err)
 				}
@@ -47,7 +47,7 @@ func init() {
 
 		return jsutil.NewPromise(cb)
 	})
-	jsutil.Binding.Set("runTemp", runTempCallback)
+	jsutil.Binding.Set("handleData", handleDataCallback)
 }
 
 //go:wasmimport workers ready
