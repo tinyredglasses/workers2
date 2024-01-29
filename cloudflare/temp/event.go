@@ -3,6 +3,7 @@ package temp
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/tinyredglasses/workers2/internal/runtimecontext"
 )
 
@@ -18,6 +19,9 @@ func NewEvent(ctx context.Context) (*Event, error) {
 		return nil, errors.New("event is null")
 	}
 
+	e := obj.Get("env")
+	fmt.Println(e)
+	fmt.Printf("%+v\n", e)
 	//scheduledTimeVal := obj.Get("scheduledTime").Float()
 	return &Event{
 		Cron: "butt",
