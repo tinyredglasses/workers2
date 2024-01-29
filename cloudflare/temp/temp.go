@@ -23,7 +23,7 @@ func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
 func init() {
 	handleDataCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 1 {
-			panic(fmt.Errorf("invalid number of arguments given to runScheduler: %d", len(args)))
+			panic(fmt.Errorf("invalid number of arguments given to handleData: %d", len(args)))
 		}
 		eventObj := args[0]
 		runtimeCtxObj := jsutil.RuntimeContext

@@ -71,14 +71,14 @@ export async function websocketFetch(req, env, ctx) {
   await run(createRuntimeContext(env, ctx, binding));
 
 
-  const fn = (env, ctx) => binding.handleData(env,ctx)
+  // const fn = (env, ctx) => binding.handleData(env,ctx)
   try {
     const url = new URL(req.url)
     switch (url.pathname) {
         // case '/':
         // 	return template()
       case '/ws':
-        return websocketHandler(req, fn)
+        return websocketHandler(req, binding.handleData)
       default:
         return new Response("Not found", { status: 404 })
     }
