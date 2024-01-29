@@ -8,7 +8,7 @@ import (
 	"syscall/js"
 )
 
-type Task func(ctx context.Context, sendMessage func(m string)) error
+type Task func(ctx context.Context, sendMessage func(ptr uint32, size uint32)) error
 
 var task Task
 
@@ -61,7 +61,7 @@ func init() {
 func ready()
 
 //go:wasmimport workers sendMessage
-func sendMessage(msg string)
+func sendMessage(ptr uint32, size uint32)
 
 // RunTemp sets the Task to be executed
 func RunTemp(t Task) {
