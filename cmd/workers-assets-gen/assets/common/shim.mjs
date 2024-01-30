@@ -71,7 +71,7 @@ export async function websocketFetch(req, env, ctx) {
   const [client, server] = Object.values(new WebSocketPair())
 
   const runtimeContext = createRuntimeContext(env, ctx, binding)
-  await run({...runtimeContext, client});
+  await run({...runtimeContext, client: server});
 
 
   // const fn = (env, ctx) => binding.handleData(env,ctx)
