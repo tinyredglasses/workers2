@@ -20,3 +20,7 @@ func Getenv(ctx context.Context, name string) string {
 func GetBinding(ctx context.Context, name string) js.Value {
 	return cfruntimecontext.MustGetRuntimeContextEnv(ctx).Get(name)
 }
+
+func GetWebsocketClient(ctx context.Context, name string) js.Value {
+	return cfruntimecontext.MustGetExecutionContext(ctx).Get(name)
+}
