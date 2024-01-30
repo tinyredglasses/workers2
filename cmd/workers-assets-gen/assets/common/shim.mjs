@@ -31,7 +31,6 @@ async function run(ctx) {
     ...go.importObject,
     workers: {
       ready: () => { ready() },
-      sendMessage: (m) => { console.log(m)}
     },
   });
   go.run(instance, ctx);
@@ -69,7 +68,10 @@ export async function onRequest(ctx) {
 
 export async function websocketFetch(req, env, ctx) {
   const binding = {};
-  await run(createRuntimeContext(env, ctx, binding));
+  const [client, server] = Object.values(new WebSocketPair())
+
+  const runtimeContext = createRuntimeContext(env, ctx, binding)
+  await run({...runtimeContext, client});
 
 
   // const fn = (env, ctx) => binding.handleData(env,ctx)
@@ -79,7 +81,7 @@ export async function websocketFetch(req, env, ctx) {
         // case '/':
         // 	return template()
       case '/ws':
-        return websocketHandler(req, binding.handleData)
+        return websocketHandler(req, client, server, binding.handleData)
       default:
         return new Response("Not found", { status: 404 })
     }
@@ -88,14 +90,15 @@ export async function websocketFetch(req, env, ctx) {
   }
 }
 
-const websocketHandler = async (request, fn) => {
+const websocketHandler = async (request, client, server, fn) => {
   console.log("websocketHandler")
   const upgradeHeader = request.headers.get("Upgrade")
   if (upgradeHeader !== "websocket") {
     return new Response("Expected websocket", { status: 400 })
   }
 
-  const [client, server] = Object.values(new WebSocketPair())
+  // const [client, server] = Object.values(new WebSocketPair())
+
   await handleWebsocketSession(server, fn)
 
   return new Response(null, {
@@ -113,7 +116,7 @@ async function handleWebsocketSession(websocket, fn) {
     // the expected imports in `importObject`. This should be
     // done at the top level of the script to avoid instantiation on every request.
 
-    fn(data)
+    const obj = fn(data)
     if (data === "CLICK") {
       count += 1
       // try {
