@@ -17,8 +17,9 @@ func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
 
 	ctx := runtimecontext.New(context.Background(), eventObj, runtimeCtxObj)
 
-	fmt.Println(runtimeCtxObj.Get("client").IsUndefined())
-	fmt.Println(runtimeCtxObj.Get("ctx").Get("client").IsUndefined())
+	//wc := runtimeCtxObj.Get("client")
+	//fmt.Println(runtimeCtxObj.Get("client").IsUndefined())
+	//fmt.Println(runtimeCtxObj.Get("ctx").Get("client").IsUndefined())
 
 	//v := runtimecontext.TryExtractRuntimeObj(ctx)
 	//e := v.Get("env")

@@ -22,5 +22,5 @@ func GetBinding(ctx context.Context, name string) js.Value {
 }
 
 func GetWebsocketClient(ctx context.Context, name string) js.Value {
-	return cfruntimecontext.MustGetExecutionContext(ctx).Get(name)
+	return cfruntimecontext.MustGetRuntimeContextValue(ctx, "client")
 }
