@@ -65,9 +65,6 @@ func init() {
 //go:wasmimport workers ready
 func ready()
 
-//go:wasmimport workers sendMessage
-func sendMessage(ptr uint32, size uint32)
-
 // RunTemp sets the Task to be executed
 func RunTemp(t Task) {
 	task = t
