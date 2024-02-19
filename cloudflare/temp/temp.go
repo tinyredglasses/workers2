@@ -43,6 +43,10 @@ func init() {
 		fmt.Println("handleDataCallback1", eventObj)
 		runtimeCtxObj := jsutil.RuntimeContext
 		fmt.Println("handleDataCallback2", runtimeCtxObj)
+
+		fsdf := js.Global().Get("JSON").Call("stringify", runtimeCtxObj)
+		fmt.Println(fsdf)
+
 		var cb js.Func
 		cb = js.FuncOf(func(_ js.Value, pArgs []js.Value) any {
 			defer cb.Release()
