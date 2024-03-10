@@ -36,6 +36,8 @@ func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
 }
 
 func init() {
+	fmt.Println("temp init")
+
 	handleDataCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
 		fmt.Println("handleDataCallback0", args)
 
@@ -47,8 +49,10 @@ func init() {
 		runtimeCtxObj := jsutil.RuntimeContext
 		fmt.Println("handleDataCallback2", runtimeCtxObj)
 
-		fsdf := js.Global().Get("JSON").Call("stringify", runtimeCtxObj)
-		fmt.Println(fsdf)
+		fsdf1 := js.Global().Get("JSON").Call("stringify", eventObj)
+		fsdf2 := js.Global().Get("JSON").Call("stringify", runtimeCtxObj)
+
+		fmt.Println(fsdf1, fsdf2)
 
 		var cb js.Func
 		cb = js.FuncOf(func(_ js.Value, pArgs []js.Value) any {
