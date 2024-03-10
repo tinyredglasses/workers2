@@ -2,6 +2,7 @@ package cloudflare
 
 import (
 	"context"
+	"github.com/tinyredglasses/workers2/internal/runtimecontext"
 	"syscall/js"
 
 	"github.com/tinyredglasses/workers2/cloudflare/internal/cfruntimecontext"
@@ -23,4 +24,8 @@ func GetBinding(ctx context.Context, name string) js.Value {
 
 func GetWebsocketClient(ctx context.Context, name string) js.Value {
 	return cfruntimecontext.MustGetRuntimeContextValue(ctx, "client")
+}
+
+func GetTriggerObject(ctx context.Context) js.Value {
+	return runtimecontext.MustExtractTriggerObj(ctx)
 }
