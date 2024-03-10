@@ -9,15 +9,8 @@ import (
 	"github.com/tinyredglasses/workers2/internal/jsutil"
 )
 
-// ToResponse converts JavaScript sides Response to *http.Response.
-//   - Response: https://developer.mozilla.org/docs/Web/API/Response
-func ToResponse(res js.Value) (*http.Response, error) {
+func toResponse(res js.Value, body io.ReadCloser) (*http.Response, error) {
 	status := res.Get("status").Int()
-	promise := res.Call("blob")
-	blob, err := jsutil.AwaitPromise(promise)
-	if err != nil {
-		return nil, err
-	}
 	header := ToHeader(res.Get("headers"))
 	contentLength, _ := strconv.ParseInt(header.Get("Content-Length"), 10, 64)
 
@@ -25,9 +18,27 @@ func ToResponse(res js.Value) (*http.Response, error) {
 		Status:        strconv.Itoa(status) + " " + res.Get("statusText").String(),
 		StatusCode:    status,
 		Header:        header,
-		Body:          jsutil.ConvertReadableStreamToReadCloser(blob.Call("stream")),
+		Body:          body,
 		ContentLength: contentLength,
 	}, nil
+}
+
+// ToResponse converts JavaScript sides Response to *http.Response.
+//   - Response: https://developer.mozilla.org/docs/Web/API/Response
+func ToResponse(res js.Value) (*http.Response, error) {
+	body := jsutil.ConvertReadableStreamToReadCloser(res.Get("body"))
+	return toResponse(res, body)
+}
+
+// ToStreamResponse pipes JavaScript sides Response to TransformStream and converts to *http.Response.
+//   - see: https://developers.cloudflare.com/workers/runtime-apis/streams/
+func ToStreamResponse(res js.Value) (*http.Response, error) {
+	ts := js.Global().Get("IdentityTransformStream").New()
+	readable := ts.Get("readable")
+	writable := ts.Get("writable")
+	res.Get("body").Call("pipeTo", writable)
+	body := jsutil.ConvertReadableStreamToReadCloser(readable)
+	return toResponse(res, body)
 }
 
 // ToJSResponse converts *http.Response to JavaScript sides Response class object.

@@ -11,6 +11,10 @@ type RawJSBodyWriter interface {
 	WriteRawJSBody(body js.Value)
 }
 
+type RawJSBodyGetter interface {
+	GetRawJSBody() js.Value
+}
+
 // readableStreamToReadCloser implements io.Reader sourced from ReadableStreamDefaultReader.
 //   - ReadableStreamDefaultReader: https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader
 //   - This implementation is based on: https://deno.land/std@0.139.0/streams/conversion.ts#L76
@@ -21,8 +25,9 @@ type readableStreamToReadCloser struct {
 }
 
 var (
-	_ io.ReadCloser = (*readableStreamToReadCloser)(nil)
-	_ io.WriterTo   = (*readableStreamToReadCloser)(nil)
+	_ io.ReadCloser   = (*readableStreamToReadCloser)(nil)
+	_ io.WriterTo     = (*readableStreamToReadCloser)(nil)
+	_ RawJSBodyGetter = (*readableStreamToReadCloser)(nil)
 )
 
 // Read reads bytes from ReadableStreamDefaultReader.
@@ -89,6 +94,10 @@ func (sr *readableStreamToReadCloser) WriteTo(w io.Writer) (n int64, err error) 
 		return 0, nil
 	}
 	return io.Copy(w, &readerWrapper{sr})
+}
+
+func (sr *readableStreamToReadCloser) GetRawJSBody() js.Value {
+	return sr.stream
 }
 
 // ConvertReadableStreamToReadCloser converts ReadableStream to io.ReadCloser.
