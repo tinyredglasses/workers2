@@ -13,6 +13,7 @@ type Task func(ctx context.Context) error
 var task Task
 
 func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
+	fmt.Println("handleData")
 	//fmt.Println("handleData1", eventObj, runtimeCtxObj)
 
 	ctx := runtimecontext.New(context.Background(), eventObj, runtimeCtxObj)
@@ -36,6 +37,8 @@ func handleData(eventObj js.Value, runtimeCtxObj js.Value) error {
 
 func init() {
 	handleDataCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
+		fmt.Println("handleDataCallback0", args)
+
 		if len(args) != 1 {
 			panic(fmt.Errorf("invalid number of arguments given to handleData: %d", len(args)))
 		}
