@@ -61,6 +61,9 @@ func handleRequest(reqObj js.Value, runtimeCtxObj js.Value) (js.Value, error) {
 	if err != nil {
 		panic(err)
 	}
+	e := runtimeCtxObj.Get("env")
+	fmt.Println(e)
+	fmt.Printf("%+v\n", e)
 	ctx := runtimecontext.New(context.Background(), reqObj, runtimeCtxObj)
 	req = req.WithContext(ctx)
 	reader, writer := io.Pipe()
