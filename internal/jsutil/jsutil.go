@@ -40,24 +40,34 @@ func ArrayFrom(v js.Value) js.Value {
 }
 
 func AwaitPromise(promiseVal js.Value) (js.Value, error) {
+	fmt.Println("AwaitPromise", "1")
+
 	resultCh := make(chan js.Value)
 	errCh := make(chan error)
 	var then, catch js.Func
+	fmt.Println("AwaitPromise", "2")
+
 	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
+		fmt.Println("AwaitPromise", "6")
 		defer then.Release()
 		result := args[0]
 		resultCh <- result
 		return js.Undefined()
 	})
+	fmt.Println("AwaitPromise", "3")
 
 	catch = js.FuncOf(func(_ js.Value, args []js.Value) any {
+		fmt.Println("AwaitPromise", "7")
 		defer catch.Release()
 		result := args[0]
 		errCh <- fmt.Errorf("failed on promise: %s", result.Call("toString").String())
 		return js.Undefined()
 	})
+	fmt.Println("AwaitPromise", "4")
 
 	promiseVal.Call("then", then).Call("catch", catch)
+	fmt.Println("AwaitPromise", "5")
+
 	select {
 	case result := <-resultCh:
 		return result, nil
