@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql/driver"
 	"errors"
+	"fmt"
 	"syscall/js"
 
 	"github.com/tinyredglasses/workers2/internal/jsutil"
@@ -55,14 +56,18 @@ func (s *stmt) Query([]driver.Value) (driver.Rows, error) {
 }
 
 func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver.Rows, error) {
+	fmt.Println("QueryContext", "1")
 	argValues := make([]any, len(args))
 	for i, arg := range args {
 		argValues[i] = arg.Value
 	}
+	fmt.Println("QueryContext", "2")
 
 	resultPromise := s.stmtObj.Call("bind", argValues...).Call("all")
+	fmt.Println("QueryContext", "3")
 
 	rowsObj, err := jsutil.AwaitPromise(resultPromise)
+	fmt.Println("QueryContext", "4")
 
 	if err != nil {
 		return nil, err
@@ -71,6 +76,7 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	if !rowsObj.Get("success").Bool() {
 		return nil, errors.New("d1: failed to query")
 	}
+	fmt.Println("QueryContext", "5")
 
 	return &rows{
 		rowsObj: rowsObj.Get("results"),
