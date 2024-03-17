@@ -69,12 +69,14 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	fmt.Println("AwaitPromise", "4")
 
 	promiseVal.Call("then", then).Call("catch", catch)
-	fmt.Println("AwaitPromise", "5")
+	fmt.Println("AwaitPromise", "5.1")
 
 	select {
 	case result := <-resultCh:
+		fmt.Println("AwaitPromise", "5.2")
 		return result, nil
 	case err := <-errCh:
+		fmt.Println("AwaitPromise", "5.3")
 		return js.Value{}, err
 	}
 }
