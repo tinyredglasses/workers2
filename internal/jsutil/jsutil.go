@@ -48,10 +48,13 @@ func AwaitPromise(promiseVal js.Value) (js.Value, error) {
 	fmt.Println("AwaitPromise", "2")
 
 	then = js.FuncOf(func(_ js.Value, args []js.Value) any {
-		fmt.Println("AwaitPromise", "6")
+		fmt.Println("AwaitPromise", "6.1")
 		defer then.Release()
+		fmt.Println("AwaitPromise", "6.2")
 		result := args[0]
+		fmt.Println("AwaitPromise", "6.3")
 		resultCh <- result
+		fmt.Println("AwaitPromise", "6.4")
 		return js.Undefined()
 	})
 	fmt.Println("AwaitPromise", "3")
