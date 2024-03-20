@@ -61,13 +61,13 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	for i, arg := range args {
 		argValues[i] = arg.Value
 	}
-	fmt.Println("QueryContext", "2")
+	//fmt.Println("QueryContext", "2")
 
 	resultPromise := s.stmtObj.Call("bind", argValues...).Call("all")
-	fmt.Println("QueryContext", "3")
+	//fmt.Println("QueryContext", "3")
 
 	rowsObj, err := jsutil.AwaitPromise(resultPromise)
-	fmt.Println("QueryContext", "4")
+	//fmt.Println("QueryContext", "4")
 
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver
 	if !rowsObj.Get("success").Bool() {
 		return nil, errors.New("d1: failed to query")
 	}
-	fmt.Println("QueryContext", "5")
+	//fmt.Println("QueryContext", "5")
 
 	return &rows{
 		rowsObj: rowsObj.Get("results"),
