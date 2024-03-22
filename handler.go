@@ -55,7 +55,7 @@ func (c *appCloser) Close() error {
 // handleRequest accepts a Request object and returns Response object.
 func handleRequest(reqObj js.Value, runtimeCtxObj js.Value) (js.Value, error) {
 	if httpHandler == nil {
-		return js.Value{}, fmt.Errorf("Serve must be called before handleRequest.")
+		return js.Value{}, fmt.Errorf("serve must be called before handleRequest")
 	}
 	req, err := jshttp.ToRequest(reqObj)
 	if err != nil {
