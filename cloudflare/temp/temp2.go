@@ -5,22 +5,22 @@ import (
 	"fmt"
 	"github.com/tinyredglasses/workers2/internal/jsutil"
 	"github.com/tinyredglasses/workers2/internal/runtimecontext"
+	"log/slog"
 	"syscall/js"
 )
 
 func init() {
-	fmt.Println("temp2 init")
+	slog.Info("init")
 
 	handleDataCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
-		fmt.Println("handleDataCallback0", args)
 
 		if len(args) != 1 {
 			panic(fmt.Errorf("invalid number of arguments given to handleData: %d", len(args)))
 		}
 		eventObj := args[0]
-		fmt.Println("handleDataCallback1", eventObj)
+		//fmt.Println("handleDataCallback1", eventObj)
 		runtimeCtxObj := jsutil.RuntimeContext
-		fmt.Println("handleDataCallback2", runtimeCtxObj)
+		//fmt.Println("handleDataCallback2", runtimeCtxObj)
 
 		//fsdf1 := js.Global().Get("JSON").Call("stringify", eventObj)
 		//fsdf2 := js.Global().Get("JSON").Call("stringify", runtimeCtxObj)
@@ -52,7 +52,7 @@ func main() {
 
 var (
 	handler MessageHandler
-	closeCh = make(chan struct{})
+	//closeCh = make(chan struct{})
 )
 
 //go:wasmimport workers ready
@@ -67,9 +67,9 @@ func handleRequest(reqObj js.Value, runtimeCtxObj js.Value) {
 	//if err != nil {
 	//	panic(err)
 	//}
-	e := runtimeCtxObj.Get("env")
-	fmt.Println(e)
-	fmt.Printf("%+v\n", e)
+	//e := runtimeCtxObj.Get("env")
+	//fmt.Println(e)
+	//fmt.Printf("%+v\n", e)
 	ctx := runtimecontext.New(context.Background(), reqObj, runtimeCtxObj)
 
 	//req = req.WithContext(ctx)
@@ -88,6 +88,6 @@ func HandleMessages(h MessageHandler) {
 	handler = h
 	ready()
 	select {
-	case <-closeCh:
+	//case <-closeCh:
 	}
 }
