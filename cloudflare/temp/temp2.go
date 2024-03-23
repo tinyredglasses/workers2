@@ -84,8 +84,8 @@ func handleRequest(reqObj js.Value, runtimeCtxObj js.Value) {
 	handler.handle(ctx, reqObj)
 }
 
-func HandleMessages(handler MessageHandler) {
-	handler = handler
+func HandleMessages(h MessageHandler) {
+	handler = h
 	ready()
 	select {
 	case <-closeCh:
