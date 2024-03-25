@@ -70,6 +70,7 @@ func handleData(event js.Value, runtimeCtx js.Value) error {
 func ready()
 
 func Handle(mhc MessageHandlerCreator) {
+	logger.Info("Handle")
 	messageHandler = mhc(sender)
 	ready()
 	select {}
