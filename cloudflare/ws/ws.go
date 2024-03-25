@@ -3,6 +3,7 @@ package ws
 import (
 	"context"
 	"fmt"
+	"github.com/tinyredglasses/workers2/cloudflare"
 	"github.com/tinyredglasses/workers2/internal/jsutil"
 	"github.com/tinyredglasses/workers2/internal/runtimecontext"
 	"log/slog"
@@ -12,14 +13,23 @@ import (
 var (
 	messageHandler MessageHandler
 	logger         = slog.With("package", "ws")
+
+	sender Sender
 )
 
 type MessageHandler interface {
 	handle(ctx context.Context, reqObj js.Value)
 }
 
+type MessageHandlerCreator func(sender Sender) MessageHandler
+
 func init() {
 	logger.Info("init")
+
+	outerRuntimeCtxObj := jsutil.RuntimeContext
+	ctx := runtimecontext.New(context.Background(), js.Value{}, outerRuntimeCtxObj)
+	websocketClient := cloudflare.GetWebsocketClient(ctx, "")
+	sender = Sender{websocketClient: websocketClient}
 
 	handleDataCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
 
@@ -59,8 +69,8 @@ func handleData(event js.Value, runtimeCtx js.Value) error {
 //go:wasmimport workers ready
 func ready()
 
-func Handle(mh MessageHandler) {
-	messageHandler = mh
+func Handle(mhc MessageHandlerCreator) {
+	messageHandler = mhc(sender)
 	ready()
 	select {}
 }

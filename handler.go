@@ -98,7 +98,3 @@ func Serve(handler http.Handler) {
 	case <-closeCh:
 	}
 }
-
-func Abc() {
-
-}
