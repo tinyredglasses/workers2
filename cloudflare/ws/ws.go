@@ -3,7 +3,6 @@ package ws
 import (
 	"context"
 	"fmt"
-	"github.com/tinyredglasses/workers2/cloudflare"
 	"github.com/tinyredglasses/workers2/internal/jsutil"
 	"github.com/tinyredglasses/workers2/internal/runtimecontext"
 	"log/slog"
@@ -21,15 +20,15 @@ type MessageHandler interface {
 	handle(ctx context.Context, reqObj js.Value)
 }
 
-type MessageHandlerCreator func(sender Sender) MessageHandler
+type MessageHandlerCreator func(ctx context.Context) MessageHandler
 
 func init() {
 	logger.Info("init")
 
-	outerRuntimeCtxObj := jsutil.RuntimeContext
-	ctx := runtimecontext.New(context.Background(), js.Value{}, outerRuntimeCtxObj)
-	websocketClient := cloudflare.GetWebsocketClient(ctx, "")
-	sender = Sender{websocketClient: websocketClient}
+	//outerRuntimeCtxObj := jsutil.RuntimeContext
+	//ctx := runtimecontext.New(context.Background(), js.Value{}, outerRuntimeCtxObj)
+	//websocketClient := cloudflare.GetWebsocketClient(ctx, "")
+	//sender = Sender{websocketClient: websocketClient}
 
 	handleDataCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
 
@@ -71,7 +70,8 @@ func ready()
 
 func Handle(mhc MessageHandlerCreator) {
 	logger.Info("Handle")
-	messageHandler = mhc(sender)
+	ctx := runtimecontext.New(context.Background(), js.Value{}, jsutil.RuntimeContext)
+	messageHandler = mhc(ctx)
 	ready()
 	select {}
 }
