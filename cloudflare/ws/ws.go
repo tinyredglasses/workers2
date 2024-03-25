@@ -61,7 +61,7 @@ func handleData(event js.Value, runtimeCtx js.Value) error {
 	logger.Info("handleData")
 	ctx := runtimecontext.New(context.Background(), event, runtimeCtx)
 
-	messageHandler.handle(ctx, event)
+	messageHandler.Handle(ctx, event)
 	return nil
 }
 
