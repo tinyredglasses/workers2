@@ -17,7 +17,7 @@ var (
 )
 
 type MessageHandler interface {
-	handle(ctx context.Context, reqObj js.Value)
+	Handle(ctx context.Context, reqObj js.Value)
 }
 
 type MessageHandlerCreator func(ctx context.Context) MessageHandler
