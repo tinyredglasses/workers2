@@ -3,7 +3,6 @@ package ws
 import (
 	"context"
 	"fmt"
-	"github.com/tinyredglasses/workers2/cloudflare"
 	"github.com/tinyredglasses/workers2/internal/jsutil"
 	"github.com/tinyredglasses/workers2/internal/runtimecontext"
 	"log/slog"
@@ -18,18 +17,18 @@ var (
 )
 
 type MessageHandler interface {
-	handle(ctx context.Context, reqObj js.Value)
+	Handle(ctx context.Context, reqObj js.Value)
 }
 
-type MessageHandlerCreator func(sender Sender) MessageHandler
+type MessageHandlerCreator func(ctx context.Context) MessageHandler
 
 func init() {
 	logger.Info("init")
 
-	outerRuntimeCtxObj := jsutil.RuntimeContext
-	ctx := runtimecontext.New(context.Background(), js.Value{}, outerRuntimeCtxObj)
-	websocketClient := cloudflare.GetWebsocketClient(ctx, "")
-	sender = Sender{websocketClient: websocketClient}
+	//outerRuntimeCtxObj := jsutil.RuntimeContext
+	//ctx := runtimecontext.New(context.Background(), js.Value{}, outerRuntimeCtxObj)
+	//websocketClient := cloudflare.GetWebsocketClient(ctx, "")
+	//sender = Sender{websocketClient: websocketClient}
 
 	handleDataCallback := js.FuncOf(func(_ js.Value, args []js.Value) any {
 
@@ -62,7 +61,7 @@ func handleData(event js.Value, runtimeCtx js.Value) error {
 	logger.Info("handleData")
 	ctx := runtimecontext.New(context.Background(), event, runtimeCtx)
 
-	messageHandler.handle(ctx, event)
+	messageHandler.Handle(ctx, event)
 	return nil
 }
 
@@ -70,7 +69,9 @@ func handleData(event js.Value, runtimeCtx js.Value) error {
 func ready()
 
 func Handle(mhc MessageHandlerCreator) {
-	messageHandler = mhc(sender)
+	logger.Info("Handle")
+	ctx := runtimecontext.New(context.Background(), js.Value{}, jsutil.RuntimeContext)
+	messageHandler = mhc(ctx)
 	ready()
 	select {}
 }
