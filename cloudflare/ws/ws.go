@@ -36,6 +36,10 @@ func init() {
 			panic(fmt.Errorf("invalid number of arguments given to handleData: %d", len(args)))
 		}
 		eventObj := args[0]
+
+		fsdf1 := js.Global().Get("JSON").Call("stringify", eventObj)
+		slog.Info(fsdf1.String())
+
 		runtimeCtxObj := jsutil.RuntimeContext
 
 		var cb js.Func
