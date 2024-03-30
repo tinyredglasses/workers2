@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"errors"
-	"fmt"
 	"syscall/js"
 
 	"github.com/tinyredglasses/workers2/internal/jsutil"
@@ -56,7 +55,7 @@ func (s *stmt) Query([]driver.Value) (driver.Rows, error) {
 }
 
 func (s *stmt) QueryContext(_ context.Context, args []driver.NamedValue) (driver.Rows, error) {
-	fmt.Println("QueryContext", "1")
+	//fmt.Println("QueryContext", "1")
 	argValues := make([]any, len(args))
 	for i, arg := range args {
 		argValues[i] = arg.Value
