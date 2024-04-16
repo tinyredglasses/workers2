@@ -26,6 +26,10 @@ func GetWebsocketClient(ctx context.Context, name string) js.Value {
 	return cfruntimecontext.MustGetRuntimeContextValue(ctx, "client")
 }
 
+func GetCtx(ctx context.Context, name string) js.Value {
+	return cfruntimecontext.MustGetExecutionContext(ctx).Get(name)
+}
+
 func GetTriggerObject(ctx context.Context) js.Value {
 	return runtimecontext.MustExtractTriggerObj(ctx)
 }
